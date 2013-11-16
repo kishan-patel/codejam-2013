@@ -28,9 +28,25 @@ app.post('/machine',function(req,res) {
   var x = req.files.file.path;
   var csv = require('ya-csv');
   var reader = csv.createCsvFileReader(x,{'columnsFromHeader':true, 'separator':','});
+  var dataArray = [];
+  var counter = 1000;
   reader.addListener('data',function(data){
-    server.csvClientData(data);
+//    if(counter >=0){
+        dataArray.push(data);
+        counter--;
+ //   }
+   // dataArray.push(data);
+    if(dataArray.length >=100){
+//      server.csvClientData(dataArray);
+ //     dataArray =[];
+    }
     console.log(data);
+  });
+  reader.addListener('end',function(){
+    if(dataArray.length != 0){
+      server.csvClientData(dataArray);
+      dataArray = [];
+    }
   });
   res.send("hello");
 });
