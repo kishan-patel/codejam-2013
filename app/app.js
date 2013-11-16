@@ -1,6 +1,7 @@
 var server = require('server.js')
   , config = require('config.js')
-  , express = require('express');
+  , express = require('express')
+  , https = require('https');
 
 var app = express();
 var httpServer = app.listen(config.APP_PORT);
@@ -31,4 +32,20 @@ app.post('/machine',function(req,res) {
   res.send("hello");
 });
 
-server.start(io);
+app.get('/pulse', function(req, res){
+  var key = '8DCCE9C23F108A00F14E806BD21D8936';
+  var interval = 'day';
+  var start = '2013-11-05T08:15:30-05:00'
+  var url = 'https://api.pulseenergy.com/pulse/1/points/50578/data.json?key='+key+'&interval='+interval+'&start='+start;
+  
+  https.get(url, function(res){
+    res.on('data', function(chunk){
+      var obj = JSON.parse(chunk);
+      console.log(obj);
+    });
+  }).on('error', function(e){
+    console.error('APP.js: '+e);
+  });
+});
+
+//server.start(io);
