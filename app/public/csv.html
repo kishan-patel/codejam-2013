@@ -20,34 +20,47 @@
     <center> <h1>CSV</h1></center>
     <center><p>Please note grid will be display when data is sent through request</p></center>
   </div>
-  <table id="grid"></table>
+  <table id="grid" class="table-striped table-bordered table-hover"></table>
   <script>
     var count = 0;
     var socket = io.connect('http://localhost:5000');
-    socket.on('csv_exchange_connection',function(data){
+    socket.on('csv_exchange_connection',function(dataBlock){
+   for(var entry in dataBlock){
+   var data = dataBlock[entry];
    if(count == 0){
       var columns = [];
       var colModel = [];
+      var output = "";
       for(var key in data){
+      output = output + "<td>"+key+"</td>";
        columns.push(key); 
        var obj = {};
        obj["name"] = key;
        obj["index"] = key;
        colModel.push(obj);
       }
-      jQuery("#grid").jqGrid({
+      $("#grid").append("<tr>"+output+"</tr>");
+/*      jQuery("#grid").jqGrid({
           datatype: "local",
           height: 250,
           colNames:columns,
           colModel: colModel
-          });
+          });*/
     count++;
-    }else{
+    }else{ 
     count++;
     }
-    jQuery("#grid").jqGrid('addRowData',count,data);
+//    if(count <25){
+   //   jQuery("#grid").jqGrid('addRowData',count,data);
+//  }
+    var output = "";
+    for(var key in data){
+    output = output + "<td>"+data[key]+"</td>";
+    }
+    $("#grid").append("<tr>"+output+"</tr>");
     var x = data;
-    console.log(data);
+    console.log(".");
+    };
     });
   </script>
 
