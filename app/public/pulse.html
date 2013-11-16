@@ -26,6 +26,7 @@
     var count = 0;
     var socket = io.connect('http://localhost:5000');
     socket.on('pulse_exchange_connection',function(dataBlock){
+      $("#pulse-grid").empty();
       var columns = [];
       if(dataBlock.length != 0){
         for(var key in dataBlock[0]){
