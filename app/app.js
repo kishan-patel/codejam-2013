@@ -1,6 +1,6 @@
 var server = require('server.js')
   , config = require('config.js')
-  , ml = require('machine_learning.js')
+  , machineLearning = require('machine_learning.js')
   , express = require('express')
   , https = require('https');
 
@@ -34,17 +34,18 @@ app.post('/machine',function(req,res) {
   reader.addListener('data',function(data){
     var nameMapping = {};
     nameMapping["date"] = data["Date"];
-    nameMapping["radiation"] = data["Montreal Net Radiation - CWTA (W/m2)"];
-    nameMapping["humidity"] = data["Montreal Relative Humidity - CWTA"];
-    nameMapping["temperature"] = data["Montreal Temperature - CWTA (C)"];
-    nameMapping["wind"] = data["Montreal Wind Speed - CWTA (km/h)"];
-    nameMapping["power"] = data["Real Power Demand - Downtown Main Entrance (kW)"];
+    nameMapping["radiation"] = parseFloat(data["Montreal Net Radiation - CWTA (W/m2)"]);
+    nameMapping["humidity"] = parseFloat(data["Montreal Relative Humidity - CWTA"]);
+    nameMapping["temperature"] = parseFloat(data["Montreal Temperature - CWTA (C)"]);
+    nameMapping["wind"] = parseFloat(data["Montreal Wind Speed - CWTA (km/h)"]);
+    nameMapping["power"] = parseFloat(data["Real Power Demand - Downtown Main Entrance (kW)"]);
     dataArray.push(nameMapping);
     console.log(data);
   });
   reader.addListener('end',function(){
     if(dataArray.length != 0){
-      server.csvClientData(dataArray);
+      var forecastedData = machineLearning.applyMachineLearning(dataArray, 'csv');
+      server.csvClientData(forecastedData);
       dataArray = [];
     }
   });
@@ -68,11 +69,11 @@ app.get('/pulseapi', function(req, res){
 });
 
 app.get('/ml', function(req, res){
-    ml.pulseForecast([]);
+    machineLearning.pulseForecast([]);
 });
 
 app.get('/ml-test', function(req, res){
-    ml.brainTest();
+    machineLearning.brainTest();
 });
 
 server.start(io);
