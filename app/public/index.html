@@ -1,0 +1,14 @@
+<html>
+<head>
+  <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+  <script src="js/rickshaw.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:5000');
+    socket.emit('start_exchange_connection');
+  </script>
+</head>
+<body>
+Works!
+</body>
+</html>
+
