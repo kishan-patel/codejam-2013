@@ -1,0 +1,43 @@
+<html>
+  <head>
+  <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
+  <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+  <script src="js/jquery-2.0.3.min.js"></script>
+  <script src="js/jquery.jqGrid.src.js"></script>
+  </head>
+  <body>
+  <h1>This will contain the csv grid</h1>
+  <table id="grid"></table>
+  <script>
+    var count = 0;
+    var socket = io.connect('http://localhost:5000');
+    socket.on('csv_exchange_connection',function(data){
+   if(count == 0){
+      var columns = [];
+      var colModel = [];
+      for(var key in data){
+       columns.push(key); 
+       var obj = {};
+       obj["name"] = key;
+       obj["index"] = key;
+       colModel.push(obj);
+      }
+      jQuery("#grid").jqGrid({
+          datatype: "local",
+          height: 250,
+          colNames:columns,
+          colModel: colModel
+          });
+    count++;
+    }else{
+    count++;
+    }
+    jQuery("#grid").jqGrid('addRowData',count,data);
+    var x = data;
+    console.log(data);
+    });
+  </script>
+
+
+  </body>
+</html>
