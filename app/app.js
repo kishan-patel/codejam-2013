@@ -1,5 +1,6 @@
 var server = require('server.js')
   , config = require('config.js')
+  , ml = require('machine_learning.js')
   , express = require('express')
   , https = require('https');
 
@@ -24,6 +25,7 @@ app.get('/csv',function(req,res){
 app.get('/pulse',function(req,res){
   res.sendfile('public/pulse.html');
 });
+
 app.post('/machine',function(req,res) {
   var x = req.files.file.path;
   var csv = require('ya-csv');
@@ -35,7 +37,7 @@ app.post('/machine',function(req,res) {
   res.send("hello");
 });
 
-app.get('/pulse', function(req, res){
+app.get('/pulseapi', function(req, res){
   var key = '8DCCE9C23F108A00F14E806BD21D8936';
   var interval = 'day';
   var start = '2013-11-05T08:15:30-05:00'
@@ -49,6 +51,14 @@ app.get('/pulse', function(req, res){
   }).on('error', function(e){
     console.error('APP.js: '+e);
   });
+});
+
+app.get('/ml', function(req, res){
+    ml.pulseForecast([]);
+});
+
+app.get('/ml-test', function(req, res){
+    ml.brainTest();
 });
 
 server.start(io);
