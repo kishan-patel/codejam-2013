@@ -30,6 +30,9 @@
       var columns = [];
       if(dataBlock.length != 0){
         for(var key in dataBlock[0]){
+          if(key == "seconds")
+            continue;
+
           var obj ={};
           obj["id"] = key;
           obj["name"] = key;
