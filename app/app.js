@@ -44,7 +44,7 @@ app.post('/machine',function(req,res) {
   });
   reader.addListener('end',function(){
     if(dataArray.length != 0){
-      var forecastedData = machineLearning.applyMachineLearning(dataArray, 'csv');
+      var forecastedData = machineLearning.csvForecast(dataArray, 'csv');
       server.csvClientData(forecastedData);
       dataArray = [];
     }
