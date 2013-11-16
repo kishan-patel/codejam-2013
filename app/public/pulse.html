@@ -1,14 +1,15 @@
 <html>
   <head>
-  <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui-1.10.3.custom.css" />
   <script src="http://localhost:5000/socket.io/socket.io.js"></script>
   <script src="js/jquery-2.0.3.min.js"></script>
-  <script src="js/jquery.jqGrid.src.js"></script>
-  <script src="js/jquery-ui-1.10.3.custom.js"></script>
   <script src="js/bootstrap.js"></script>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+  <script src="js/SlickGrid/lib/jquery.event.drag-2.2.js"></script>
+  <script src="js/SlickGrid/slick.core.js"></script>
+  <script src="js/SlickGrid/slick.grid.js"></script>
+  <link rel="stylesheet" type="text/css" href="js/SlickGrid/slick.grid.css">
+  <link rel="stylesheet" type="text/css" href="js/SlickGrid/css/smoothness/jquery-ui-1.8.16.custom.css">
   </head>
   <body>
   <ul class="nav nav-tabs">
@@ -20,34 +21,29 @@
     <center> <h1>Pulse Live Stream</h1></center>
     <center><p>Please note grid will be display when data is sent through request</p></center>
   </div>
-  <table id="grid"></table>
+ <center> <div id="pulse-grid" style="width:95%; height: 500px"></div></center>
   <script>
     var count = 0;
     var socket = io.connect('http://localhost:5000');
-    socket.on('pulse_exchange_connection',function(data){
-   if(count == 0){
+    socket.on('pulse_exchange_connection',function(dataBlock){
       var columns = [];
-      var colModel = [];
-      for(var key in data){
-       columns.push(key); 
-       var obj = {};
-       obj["name"] = key;
-       obj["index"] = key;
-       colModel.push(obj);
+      if(dataBlock.length != 0){
+        for(var key in dataBlock[0]){
+          var obj ={};
+          obj["id"] = key;
+          obj["name"] = key;
+          obj["field"] = key;
+          columns.push(obj);
+        }
       }
-      jQuery("#grid").jqGrid({
-          datatype: "local",
-          height: 250,
-          colNames:columns,
-          colModel: colModel
-          });
-    count++;
-    }else{
-    count++;
-    }
-    jQuery("#grid").jqGrid('addRowData',count,data);
-    var x = data;
-    console.log(data);
+      var options = {
+        enableColumnReorder:false,
+        fullWidthRows:true,
+        forceFitColumns:true
+        };
+      var grid = new Slick.Grid("#pulse-grid",dataBlock,columns,options);
+//      var x = data;
+      console.log(".");
     });
   </script>
 

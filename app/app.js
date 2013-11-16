@@ -31,17 +31,15 @@ app.post('/machine',function(req,res) {
   var csv = require('ya-csv');
   var reader = csv.createCsvFileReader(x,{'columnsFromHeader':true, 'separator':','});
   var dataArray = [];
-  var counter = 1000;
   reader.addListener('data',function(data){
-//    if(counter >=0){
-        dataArray.push(data);
-        counter--;
- //   }
-   // dataArray.push(data);
-    if(dataArray.length >=100){
-//      server.csvClientData(dataArray);
- //     dataArray =[];
-    }
+    var nameMapping = {};
+    nameMapping["date"] = data["Date"];
+    nameMapping["radiation"] = data["Montreal Net Radiation - CWTA (W/m2)"];
+    nameMapping["humidity"] = data["Montreal Relative Humidity - CWTA"];
+    nameMapping["temperature"] = data["Montreal Temperature - CWTA (C)"];
+    nameMapping["wind"] = data["Montreal Wind Speed - CWTA (km/h)"];
+    nameMapping["power"] = data["Real Power Demand - Downtown Main Entrance (kW)"];
+    dataArray.push(nameMapping);
     console.log(data);
   });
   reader.addListener('end',function(){
@@ -50,7 +48,7 @@ app.post('/machine',function(req,res) {
       dataArray = [];
     }
   });
-  res.send("hello");
+  res.send("200");
 });
 
 app.get('/pulseapi', function(req, res){
