@@ -1,6 +1,10 @@
 <html>
 <head>
   <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+  <script src="js/jquery-2.0.3.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
   <script src="js/rickshaw.js"></script>
   <script>
     var socket = io.connect('http://localhost:5000');
@@ -8,7 +12,14 @@
   </script>
 </head>
 <body>
-Works!
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">Home</a></li>
+    <li><a href="/csv">CSV</a></li>
+    <li><a href="/pulse">Pulse-Live</a></li>
+  </ul>
+  <div class="jumbotron">
+   <center> <h1>HOME</h1></center>
+  </div>
 </body>
 </html>
 

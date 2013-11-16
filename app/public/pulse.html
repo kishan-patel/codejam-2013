@@ -13,18 +13,18 @@
   <body>
   <ul class="nav nav-tabs">
     <li><a href="/">Home</a></li>
-    <li class="active"><a href="#">CSV</a></li>
-    <li><a href="/pulse">Pulse-Live</a></li>
+    <li><a href="/csv">CSV</a></li>
+    <li class="active"><a href="#">Pulse-Live</a></li>
   </ul>
   <div class="jumbotron">
-    <center> <h1>CSV</h1></center>
+    <center> <h1>Pulse Live Stream</h1></center>
     <center><p>Please note grid will be display when data is sent through request</p></center>
   </div>
   <table id="grid"></table>
   <script>
     var count = 0;
     var socket = io.connect('http://localhost:5000');
-    socket.on('csv_exchange_connection',function(data){
+    socket.on('pulse_exchange_connection',function(data){
    if(count == 0){
       var columns = [];
       var colModel = [];

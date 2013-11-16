@@ -21,6 +21,9 @@ app.get('/', function(req, res){
 app.get('/csv',function(req,res){
   res.sendfile('public/csv.html');
 });
+app.get('/pulse',function(req,res){
+  res.sendfile('public/pulse.html');
+});
 app.post('/machine',function(req,res) {
   var x = req.files.file.path;
   var csv = require('ya-csv');
@@ -48,4 +51,4 @@ app.get('/pulse', function(req, res){
   });
 });
 
-//server.start(io);
+server.start(io);
