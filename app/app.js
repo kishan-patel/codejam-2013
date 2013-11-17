@@ -51,7 +51,8 @@ app.post('/machine',function(req,res) {
       //We need to convert the JSON object into csv
       var csvString = 'Date,Real Power Demand - Downtown Main Entrance (kW)\n';
       for(var i=0; i<forecastedData.length; i++){
-          csvString += forecastedData[i].date + ',' + forecastedData[i].power+'\n';
+          if(forecastedData[i].forecast!=undefined && forecastedData[i].forecast)
+            csvString += forecastedData[i].date + ',' + forecastedData[i].power+'\n';
       }
       res.send(csvString);
       dataArray = [];
