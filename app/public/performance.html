@@ -27,7 +27,7 @@
       received in the pulse request). The ideal learning algorithm would produce lines that are right on top of each other.</p>
     </center>
   </div>
- <div id="performance-chart"></div>
+  <center><div id="performance-chart"></div><center>
   <script>
     // set the date we're counting down to
     var count = 0;
@@ -42,15 +42,13 @@
       }]
       var graph = new Rickshaw.Graph({
         element: document.getElementById('performance-chart'),
+        min: -1.1,
+        width: 1000,
         renderer: 'line',
         series: series,
         interpolation: 'linear'
       });
       graph.render();
-      var xAxis = new Rickshaw.Graph.Axis.Time({
-        graph: graph
-      });
-      xAxis.render();
       
       var yAxis = new Rickshaw.Graph.Axis.Y({
         graph: graph
