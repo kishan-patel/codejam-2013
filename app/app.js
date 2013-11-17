@@ -53,24 +53,12 @@ app.post('/machine',function(req,res) {
   res.send("200");
 });
 
-app.get('/pulseapi', function(req, res){
-  var key = '8DCCE9C23F108A00F14E806BD21D8936';
-  var interval = 'day';
-  var start = '2013-11-05T08:15:30-05:00'
-  var url = 'https://api.pulseenergy.com/pulse/1/points/50578/data.json?key='+key+'&interval='+interval+'&start='+start;
-  
-  https.get(url, function(res){
-    res.on('data', function(chunk){
-      var obj = JSON.parse(chunk);
-      console.log(obj);
-    });
-  }).on('error', function(e){
-    console.error('APP.js: '+e);
-  });
+app.get('/confidence-bound', function(req, res){
+  res.send('confidence.html');
 });
 
-app.get('/ml', function(req, res){
-    machineLearning.pulseForecast([]);
+app.get('/ml-performance', function(req, res){
+  res.send('performance.html');
 });
 
 app.get('/ml-test', function(req, res){
