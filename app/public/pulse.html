@@ -16,6 +16,8 @@
     <li><a href="/">Home</a></li>
     <li><a href="/csv">CSV</a></li>
     <li class="active"><a href="#">Pulse-Live</a></li>
+    <li><a href="/confidence-bound">Confidence-Bound</a></li>
+    <li><a href="/ml-performance">ML-Performance</a></li>
   </ul>
   <div class="jumbotron">
     <center> <h1>Pulse Live Stream</h1></center>
@@ -35,8 +37,12 @@
         for(var key in dataBlock[0]){
           if(key == "seconds")
             continue;
-
+          
+            
           var obj ={};
+          if(key == "date")
+            obj["width"] = 100;
+
           obj["id"] = key;
           obj["name"] = key;
           obj["field"] = key;
