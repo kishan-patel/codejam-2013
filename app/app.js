@@ -64,6 +64,7 @@ app.get('/confidence-bound', function(req, res){
 });
 
 app.get('/ml-performance', function(req, res){
+  //machineLearning.trainAndTest();
   res.sendfile('public/performance.html');
 });
 

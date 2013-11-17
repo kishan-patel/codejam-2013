@@ -62,7 +62,7 @@
   
     //Code that implements the timer
     var target_date = new Date();
-    target_date.setMinutes(target_date.getMinutes()+1);
+    target_date.setMinutes(target_date.getMinutes()+15);
 
     // variables for time units
     var days, hours, minutes, seconds;
@@ -84,7 +84,7 @@
       countdown.innerHTML =  minutes + "m, " + seconds + "s";
       if(seconds<=1){
         target_date = new Date();
-        target_date.setMinutes(target_date.getMinutes()+1);
+        target_date.setMinutes(target_date.getMinutes()+15);
         socket.emit('pulse_ready', {'ready':true});
       }
    }, 1000); 
