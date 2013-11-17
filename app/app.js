@@ -2,7 +2,8 @@ var server = require('server.js')
   , config = require('config.js')
   , machineLearning = require('machine_learning.js')
   , express = require('express')
-  , https = require('https');
+  , https = require('https')
+  , conLearning = require('conf_learning.js');
 
 var app = express();
 var httpServer = app.listen(config.APP_PORT);
@@ -41,7 +42,7 @@ app.post('/machine',function(req,res) {
     nameMapping["wind"] = parseFloat(data["Montreal Wind Speed - CWTA (km/h)"]);
     nameMapping["power"] = parseFloat(data["Real Power Demand - Downtown Main Entrance (kW)"]);
     dataArray.push(nameMapping);
-    console.log(data);
+//    console.log(data);
   });
   reader.addListener('end',function(){
     if(dataArray.length != 0){
@@ -52,7 +53,32 @@ app.post('/machine',function(req,res) {
   });
   res.send("200");
 });
+app.post('/confidence-post',function(req,res) {
 
+  var x = req.files.file.path;
+  var csv = require('ya-csv');
+  var reader = csv.createCsvFileReader(x,{'columnsFromHeader':true, 'separator':','});
+  var dataArray = [];
+  reader.addListener('data',function(data){
+    var nameMapping = {};
+    nameMapping["date"] = data["Date"];
+    nameMapping["radiation"] = parseFloat(data["Montreal Net Radiation - CWTA (W/m2)"]);
+    nameMapping["humidity"] = parseFloat(data["Montreal Relative Humidity - CWTA"]);
+    nameMapping["temperature"] = parseFloat(data["Montreal Temperature - CWTA (C)"]);
+    nameMapping["wind"] = parseFloat(data["Montreal Wind Speed - CWTA (km/h)"]);
+    nameMapping["power"] = parseFloat(data["Real Power Demand - Downtown Main Entrance (kW)"]);
+    dataArray.push(nameMapping);
+    //console.log(data);
+  });
+  reader.addListener('end',function(){
+    if(dataArray.length != 0){
+      var forecastedData = conLearning.csvForecast(dataArray, 'csv');
+      server.confidenceClientData(forecastedData);
+      
+      res.send(forecastedData);
+    }
+  });
+});
 app.get('/confidence-bound', function(req, res){
   res.sendfile('public/confidence.html');
 });
