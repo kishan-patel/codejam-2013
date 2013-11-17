@@ -54,11 +54,11 @@ app.post('/machine',function(req,res) {
 });
 
 app.get('/confidence-bound', function(req, res){
-  res.send('confidence.html');
+  res.sendfile('public/confidence.html');
 });
 
 app.get('/ml-performance', function(req, res){
-  res.send('performance.html');
+  res.sendfile('public/performance.html');
 });
 
 app.get('/ml-test', function(req, res){
