@@ -21,27 +21,39 @@
     <center> <h1>CSV</h1></center>
     <center><p>Please note grid will be display when data is sent through request</p></center>
   </div>
- <center> <div id="grid" style="width:95%; height: 500px"></div></center>
+    <center> <div id="grid" style="width:95%; height: 50%"></div></center>
   <script>
     var count = 0;
     var socket = io.connect('http://localhost:5000');
     socket.on('csv_exchange_connection',function(dataBlock){
+      var htmlTable = "";
       var columns = [];
       if(dataBlock.length != 0){
+        htmlTable = htmlTable + "<tr>";
         for(var key in dataBlock[0]){
+          htmlTable +=  "<td>"+key+"</td>";
           var obj ={};
           obj["id"] = key;
           obj["name"] = key;
           obj["field"] = key;
           columns.push(obj);
         }
+        htmlTable += "</tr>";
       }
+      /*for(var i in dataBlock){
+        htmlTable +="<tr>";
+        for(var key in dataBlock[i]){
+          htmlTable += "<td>"+dataBlock[i][key]+"</td>"; 
+        }
+        htmlTable += "</tr>"
+      }*/
       var options = {
         enableColumnReorder:false,
         fullWidthRows:true,
         forceFitColumns:true
         };
-      var grid = new Slick.Grid("#grid",dataBlock,columns,options);
+    //    $("#grid").append(htmlTable);
+     var grid = new Slick.Grid("#grid",dataBlock,columns,options);
 //      var x = data;
       console.log(".");
     });

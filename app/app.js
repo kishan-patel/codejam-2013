@@ -23,8 +23,8 @@ app.get('/csv',function(req,res){
   res.sendfile('public/csv.html');
 });
 app.get('/pulse',function(req,res){
-  machineLearning.pulseForecast([]);
   res.sendfile('public/pulse.html');
+//  machineLearning.pulseForecast([]);
 });
 
 app.post('/machine',function(req,res) {
