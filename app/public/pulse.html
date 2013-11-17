@@ -19,10 +19,13 @@
   </ul>
   <div class="jumbotron">
     <center> <h1>Pulse Live Stream</h1></center>
-    <center><p>Please note grid will be display when data is sent through request</p></center>
+    <center>
+      <p>Table will update in:&nbsp<font color="red" id="countdown"></font></p>
+    </center>
   </div>
  <center> <div id="pulse-grid" style="width:95%; height: 500px"></div></center>
   <script>
+    // set the date we're counting down to
     var count = 0;
     var socket = io.connect('http://localhost:5000');
     socket.on('pulse_exchange_connection',function(dataBlock){
@@ -50,6 +53,35 @@
       console.log(".");
     });
     socket.emit('pulse_ready',{'ready':true});
+  
+    //Code that implements the timer
+    var target_date = new Date();
+    target_date.setMinutes(target_date.getMinutes()+1);
+
+    // variables for time units
+    var days, hours, minutes, seconds;
+
+    // get tag element
+    var countdown = document.getElementById("countdown");
+
+    // update the tag with id "countdown" every 1 second
+    setInterval(function () {
+
+      // find the amount of "seconds" between now and target
+      var current_date = new Date().getTime();
+      var seconds_left = (target_date - current_date) / 1000;
+
+      minutes = parseInt(seconds_left / 60);
+      seconds = parseInt(seconds_left % 60);
+
+      // format countdown string + set tag value
+      countdown.innerHTML =  minutes + "m, " + seconds + "s";
+      if(seconds<=1){
+        target_date = new Date();
+        target_date.setMinutes(target_date.getMinutes()+1);
+        socket.emit('pulse_ready', {'ready':true});
+      }
+   }, 1000); 
   </script>
 
 
