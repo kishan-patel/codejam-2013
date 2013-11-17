@@ -47,10 +47,16 @@ app.post('/machine',function(req,res) {
     if(dataArray.length != 0){
       var forecastedData = machineLearning.csvForecast(dataArray, 'csv');
       server.csvClientData(forecastedData);
+
+      //We need to convert the JSON object into csv
+      var csvString = 'Date,Real Power Demand - Downtown Main Entrance (kW)\n';
+      for(var i=0; i<forecastedData.length; i++){
+          csvString += forecastedData[i].date + ',' + forecastedData[i].power+'\n';
+      }
+      res.send(csvString);
       dataArray = [];
     }
   });
-  res.send("200");
 });
 
 app.get('/confidence-bound', function(req, res){
